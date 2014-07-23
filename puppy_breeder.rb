@@ -21,33 +21,25 @@ class PurchaseOrder
 end
 
 class Puppy
-
-  def initialize(breed,name,age)
+  attr_reader :breed, :name
+  def initialize(name,breed,price=nil)
     @breed = breed
     @name = name
-    @age = age
-    PuppyContainer.add_puppy_to_container(self)
+    PuppyContainer.add_puppy_to_container(self, price)
   end
 
 end
 class PuppyContainer
-  attr_accessor :container
-  @@container = {
-    :boxer => {
-      :price => 5000,
-      :list => []
-    },
-    :pit => {
-      :price => 300,
-      :list => []
-    }
-  }
-  def self.add_puppy_to_container(puppy)
+  @@container = {}
+  def self.add_puppy_to_container(puppy, price)
     if @@container.has_key?(puppy.breed)
       @@container[puppy.breed][:list] << puppy
     else
-      @@container[puppy.breed] = {price: nil, list: [puppy]}
+      @@container[puppy.breed] = {price: price, list: [puppy]}
     end
+  end
+  def self.container
+    @@container
   end
 end
 def review_requests
@@ -84,4 +76,4 @@ end
 3.times do
   Puppy.new("Java","Husky", 100)
 end
-p PuppyContainer.container
+
